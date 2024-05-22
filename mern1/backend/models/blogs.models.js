@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const blogsSchema = new mongoose.Schema({
     userId: {type: Number, unique: true, maxlength: 50},
     title: {type: String, maxlength: 100},
