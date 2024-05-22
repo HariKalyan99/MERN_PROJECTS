@@ -14,7 +14,7 @@ const currenciesRouter = require('./routes/currencies.routes');
 const verifyAuhorization = require('./middlewares/verifyauth');
 const blogsRouter = require('./routes/blogs.routes');
 const mongoose = require('mongoose');
-const DB_URI = process.env.dburi
+const DB_URI = process.env.dburi;
 
 
 
@@ -83,15 +83,15 @@ currencyExpress.listen(port3,() => {
 
 const blogsExpress = express();
 const port4 = 8084;
-
+blogsExpress.use(express.json())
 blogsExpress.use("/", blogsRouter);
 
 
 mongoose.connect(DB_URI).then(() => {
-console.log("Coonected to mongoDB server")
-blogsExpress.listen(port4, () => {
+    console.log("Connected to mongoDB server")
+    blogsExpress.listen(port4, () => {
     console.log(`Listening the node-express server on port ${port3}`);
-})
+    })
 }).catch((error) => {
     console.log("Couldn't connect to mongodb server")
 })
