@@ -10,6 +10,7 @@ const userRouter = require("./routes/users.routes");
 const currencyRouter = require("./routes/currencies.routes");
 const verifyAuth = require("./middlewares/verifyauth");
 const postRouter = require('./routes/posts.routes');
+const signUpRouter = require('./routes/auth.routes');
 const serverInfo = {
     server: "Node-http server",
     date: new Date().toDateString(),
@@ -97,6 +98,13 @@ postExpress.use("/", postRouter);
 
 
 
+const authorExpress = express();
+const port5 = 8085;
+
+authorExpress.use(express.json());
+authorExpress.use("/auth", signUpRouter);
+
+
 
 mongoose.connect(DB_URI).then(() => {
     console.log("Successfully Connected to mongo server");
@@ -112,6 +120,10 @@ mongoose.connect(DB_URI).then(() => {
 
     postExpress.listen(port4, () => {
         console.log(`Listening to node-express-mongoose server on port: ${port4}`)
+    })
+
+    authorExpress.listen(port5, () => {
+        console.log(`Listening to node-express-mongoose server on port: ${port5} for author login`)
     })
 
 }).catch(() => {
