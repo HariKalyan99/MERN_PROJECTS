@@ -1,4 +1,6 @@
 require('dotenv').config();
+const mongoose = require('mongoose');
+
 const http = require("http");
 const express = require("express");
 const port1 = 8081;
@@ -7,12 +9,13 @@ const userInfo = require('../BACKEND/json/users.json');
 const userRouter = require("./routes/users.routes");
 const currencyRouter = require("./routes/currencies.routes");
 const verifyAuth = require("./middlewares/verifyauth");
+const postRouter = require('./routes/posts.routes');
 const serverInfo = {
     server: "Node-http server",
     date: new Date().toDateString(),
     time: new Date().toTimeString()
 }
-
+const DB_URI = process.env.url;
 const server = http.createServer((request, response) => {
     if(request.method === "GET"){
         const id = request.url.split("/")[2];
@@ -63,9 +66,10 @@ const server = http.createServer((request, response) => {
 
 })
 
-server.listen(port1, () => {
-    console.log(`Listening on port ${port1}`)
-})
+
+
+
+
 
 const port2 = 8082;
 
@@ -74,9 +78,7 @@ userExpress.use(verifyAuth);
 userExpress.use(express.json());
 userExpress.use("/", userRouter);
 
-userExpress.listen(port2, () => {
-    console.log(`Listening to port: ${port2} of user-Data`);
-})
+
 
 
 
@@ -86,6 +88,32 @@ const currencyExpress = express();
 currencyExpress.use(express.json());
 currencyExpress.use("/", currencyRouter);
 
-currencyExpress.listen(port3, () => {
-    console.log(`Listening to port: ${port3} of currency-Data`);
+const port4 = 8084;
+
+const postExpress = express();
+
+postExpress.use(express.json());
+postExpress.use("/", postRouter);
+
+
+
+
+mongoose.connect(DB_URI).then(() => {
+    console.log("Successfully Connected to mongo server");
+    server.listen(port1, () => {
+        console.log(`Listening on port ${port1}`)
+    })
+    userExpress.listen(port2, () => {
+        console.log(`Listening to port: ${port2} of user-Data`);
+    })
+    currencyExpress.listen(port3, () => {
+        console.log(`Listening to port: ${port3} of currency-Data`);
+    })
+
+    postExpress.listen(port4, () => {
+        console.log(`Listening to node-express-mongoose server on port: ${port4}`)
+    })
+
+}).catch(() => {
+    console.log("Connection unsuccessfull")
 })
