@@ -2,6 +2,8 @@ const Authmodel = require("../models/auth.model")
 const bcrypt = require('bcrypt');
 const UserService = require("./user.services");
 const User = new UserService();
+const SECRET_KEY = "dkasdasdiod0930dd-dqd0"
+const jwt = require('jsonwebtoken');
 
 class AuthService {
     encryptPassword = async(password) => {
@@ -20,6 +22,20 @@ class AuthService {
         }
     }
     
+    generateToken = async(userName) => {
+        try{
+            const payload = {
+                userName
+            }
+            const options = {
+                expiresIn: "1hr"
+            }
+            const token = jwt.sign(payload, SECRET_KEY, options);
+            return token;
+        }catch(error){
+            throw error
+        }
+    }
 
 
     verifyPassword = async(username, password) => {
@@ -39,7 +55,8 @@ class AuthService {
         try{
             const response = await this.verifyPassword(body.userName, body.password);
             if(response){
-                return {isLoggedIn: true}
+                const token = await this.generateToken(response.userName);
+                return {isLoggedIn: true, token}
             }else{
                 return {isLoggedIn: false}
             }

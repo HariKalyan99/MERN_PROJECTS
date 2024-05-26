@@ -1,5 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const http = require("http");
 const express = require("express");
@@ -101,6 +102,11 @@ postExpress.use("/", postRouter);
 const authorExpress = express();
 const port5 = 8085;
 
+authorExpress.use(cors({
+    origin: 'http://localhost:3000',
+    allowedHeaders: 'Origin, X-Requested-with, Content-Type, Accept',
+    credentials: true,
+}))
 authorExpress.use(express.json());
 authorExpress.use("/auth", signUpRouter);
 

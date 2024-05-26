@@ -9,6 +9,6 @@ const validateLogin = validateLoginSchema(authorLoginSchema)
 
 
 signUpRouter.post("/signup",validateUser, postAuthSignup);
-signUpRouter.post("/login",validateLogin, postAuthLogin)
+signUpRouter.post("/login",validateLogin, postAuthLogin);
 
 module.exports = signUpRouter;
