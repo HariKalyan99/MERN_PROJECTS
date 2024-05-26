@@ -2,6 +2,12 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+
+
+const configurePassport = require('./config/passport');
+const passport = require('passport');
+configurePassport(passport)
+
 const http = require("http");
 const express = require("express");
 const port1 = 8081;

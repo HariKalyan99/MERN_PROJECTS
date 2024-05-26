@@ -34,4 +34,15 @@ const postAuthLogin = async(request, response) => {
     }
 }
 
-module.exports = {postAuthSignup, postAuthLogin};
+
+const postNewDisussion = async(request, response) => {
+    try{
+        const result = await Auth.newDiscussion({...request.body});
+        return response.status(201).json(result);
+    }catch(error){
+        return response.status(500).json({message: "Could not create the new Discussion", error});
+    }
+
+}
+
+module.exports = {postAuthSignup, postAuthLogin, postNewDisussion};

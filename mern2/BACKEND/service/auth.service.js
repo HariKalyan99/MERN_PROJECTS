@@ -2,8 +2,9 @@ const Authmodel = require("../models/auth.model")
 const bcrypt = require('bcrypt');
 const UserService = require("./user.services");
 const User = new UserService();
-const SECRET_KEY = "dkasdasdiod0930dd-dqd0"
+const SECRET_KEY = process.env.SECRET_KEY
 const jwt = require('jsonwebtoken');
+const DiscussionModel = require('../models/discussion.model');
 
 class AuthService {
     encryptPassword = async(password) => {
@@ -60,6 +61,15 @@ class AuthService {
             }else{
                 return {isLoggedIn: false}
             }
+        }catch(error){
+            throw error
+        }
+    }
+    newDiscussion = async(body) => {
+        try{
+            const discussion = new DiscussionModel({...body});
+            const result = await discussion.save();
+            return result;
         }catch(error){
             throw error
         }
